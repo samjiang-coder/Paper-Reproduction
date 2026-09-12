@@ -75,11 +75,13 @@ TransMIL 尚未完成 training
 ---
 
 # Paper4:NGMIL
-## 目前查無code
+-
+ 目前查無code
 ---
 
 # Paper5:RethinkingMIL
 ## 目前狀態
+-
 已成功進入 training log，但實際未開始訓練
 -----
 
