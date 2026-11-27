@@ -1,0 +1,5 @@
+﻿__pycache__/
+*.pyc
+*.zip
+temp_train/
+events.out.tfevents*

@@ -47,7 +47,8 @@ def generate_pt_files(args, df):
         repeated_label = bag_label.repeat(bag_feats.size(0), 1)
         stacked_data = torch.cat((bag_feats, repeated_label), dim=1)
         # Save the stacked data into a .pt file
-        pt_file_path = os.path.join(temp_train_dir, os.path.splitext(feats_csv_path)[0].split(os.sep)[-1] + ".pt")
+        bag_name = os.path.splitext(os.path.basename(feats_csv_path.replace('\\', '/')))[0]
+        pt_file_path = os.path.join(temp_train_dir, bag_name + ".pt")
         torch.save(stacked_data, pt_file_path)
 
 
@@ -338,7 +339,7 @@ def main():
                     save_model(args, iteration, run, save_path, milnet, thresholds_optimal)
                     best_model = copy.deepcopy(milnet)
                 if counter > args.stop_epochs: break
-            test_loss_bag, avg_score, aucs, thresholds_optimal = test(test_path, best_model, criterion, args)
+            test_loss_bag, avg_score, aucs, thresholds_optimal = test(args, test_path, best_model, criterion)
             fold_results.append((best_ac, best_auc))
         mean_ac = np.mean(np.array([i[0] for i in fold_results]))
         mean_auc = np.mean(np.array([i[1] for i in fold_results]), axis=0)

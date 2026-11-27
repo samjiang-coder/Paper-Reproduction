@@ -36,7 +36,7 @@ def slide_to_patch(out_base, img_slides, step, folder='test'):
     step_size = step
     for s in range(len(img_slides)):
         img_slide = img_slides[s]
-        img_name = img_slide.split(path.sep)[-1].split('.')[0]
+        img_name = img_slide.replace('\\', '/').split('/')[-1].split('.')[0]
         bag_path = join(out_base, img_name)
         makedirs(bag_path, exist_ok=True)
         img = slide.OpenSlide(img_slide)
@@ -52,6 +52,7 @@ def slide_to_patch(out_base, img_slides, step, folder='test'):
             for i in range(step_x_max): # columns
                 crop_slide(img, bag_path, (i*step_size, j*step_size), step=(j, i), patch_size=patch_size)
             sys.stdout.write('\r Cropped: {}/{} -- {}/{}'.format(s+1, len(img_slides), j+1, step_y_max))
+    print('\nCropping completed!')
                 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate patches from testing slides')

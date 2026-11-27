@@ -6,7 +6,7 @@ from torch.utils.data import Dataset,DataLoader
 import torch
 from PIL import Image
 import os
-import parser
+#import parser
 
 
 class Datasets(Dataset):

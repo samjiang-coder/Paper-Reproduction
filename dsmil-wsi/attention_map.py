@@ -1,3 +1,6 @@
+import os
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+
 import dsmil as mil
 
 import torch
@@ -24,7 +27,7 @@ class BagDataset():
     def __getitem__(self, idx):
         path = self.files_list[idx]
         img = Image.open(path)
-        img_name = path.split(os.sep)[-1]
+        img_name = path.replace('\\', '/').split('/')[-1]
         img_pos = np.asarray([int(img_name.split('.')[0].split('_')[0]), int(img_name.split('.')[0].split('_')[1])]) # row, col
         sample = {'input': img, 'position': img_pos}
         
@@ -108,7 +111,7 @@ def test(args, bags_list, milnet):
             color_map = np.zeros((np.amax(pos_arr, 0)[0]+1, np.amax(pos_arr, 0)[1]+1, 3))
             for k, pos in enumerate(pos_arr):
                 color_map[pos[0], pos[1]] = colored_tiles[k]
-            slide_name = bags_list[i].split(os.sep)[-1]
+            slide_name = bags_list[i].replace('\\', '/').split('/')[-1]
             color_map = transform.resize(color_map, (color_map.shape[0]*32, color_map.shape[1]*32), order=0)
             io.imsave(os.path.join(args.map_path, slide_name+'.png'), img_as_ubyte(color_map))
             if args.export_scores:
